@@ -57,7 +57,7 @@ public class ReviewsPopulator implements CommandLineRunner {
 						+ ".\r\n" + "\r\n"
 						+ "Platforms extensible initiatives synergies leading-edge bricks-and-clicks end-to-end user-centric reintermediate scale leading-edge data-driven mesh. Morph visionary 24/365. Methodologies syndicate matrix synthesize user-centric networkeffects podcasting content B2C sexy deliver webservices unleash? Networkeffects expedite folksonomies compelling solutions; ecologies technologies brand back-end transform revolutionize, sticky, mindshare enable initiatives? Engage deliverables user-contributed robust innovative embrace synergies viral addelivery communities sexy? B2B engage turn-key transition compelling, real-time cutting-edge transition create embrace orchestrate strategic engage proactive users, whiteboard life-hacks innovative.",
 				LocalDate.of(2010, Month.AUGUST, 1), "this is a comic book", "img/4924453496_b4d39c2cd8_m.jpg",
-				gimmeTagSet(tags, "war", "graphic novels", "fiction"))));
+				gimmeTagSet(tags, "war", "fiction"))));
 		// gimmeURL("https://farm5.staticflickr.com/4119/4924453496_b4d39c2cd8_m_d.jpg"),
 		reviewList.add(reviewRepository.save(new Review("A Discovery of New Worlds", categories.get("books"), "March 21, 2017\r\n"
 				+ "Format: Paperback\r\n"
@@ -70,7 +70,7 @@ public class ReviewsPopulator implements CommandLineRunner {
 				LocalDate.of(2012, Month.JANUARY, 1),
 				"Translated by Aprah Behn, 1688. Hesperus Press 2012. 17th century popular astronomy",
 				"img/8083124491_e49d85055b_m.jpg",
-				gimmeTagSet(tags, "translated", "astronomy", "french", "nonfiction"))));
+				gimmeTagSet(tags, "translated", "astronomy", "nonfiction"))));
 		// gimmeURL("https://farm9.staticflickr.com/8330/8083124491_e49d85055b_m_d.jpg"),
 		reviewList.add(reviewRepository.save(new Review(
 				"Fifty Specialty Libraries of New York City: From Botany to Magic ", categories.get("books"),
@@ -143,11 +143,11 @@ public class ReviewsPopulator implements CommandLineRunner {
 		tags.put("tasty", tagRepository.save(new Tag("tasty")));
 		tags.put("translated", tagRepository.save(new Tag("translated")));
 		tags.put("astronomy", tagRepository.save(new Tag("astronomy")));
-		tags.put("french", tagRepository.save(new Tag("french")));
+		//tags.put("french", tagRepository.save(new Tag("french")));
 		//tags.put("book", tagRepository.save(new Tag("book")));
 		tags.put("nonfiction", tagRepository.save(new Tag("nonfiction")));
 		tags.put("war", tagRepository.save(new Tag("war")));
-		tags.put("graphic novels", tagRepository.save(new Tag("graphic novels")));
+		//tags.put("graphic novels", tagRepository.save(new Tag("graphic novels")));
 		tags.put("fiction", tagRepository.save(new Tag("fiction")));
 		tags.put("new york city", tagRepository.save(new Tag("new york city")));
 		return tags;
