@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<ul th:fragment="category-list" class="menu tag-list list-nostyle shadow-light roundy">
+	<li class="menu-item tab-item"><h3>Categories:</h3></li>
+	<li class="menu-item tab-item" th:classappend="${selectedCategory}?none:menu-item-active">
+		<a th:remove="${selectedCategory}?none:tag"	href="/reviews">All</a>
+	</li>
+	<li class="menu-item tab-item" th:each="category: ${categoryList}"
+		th:classappend="${selectedCategory == category} ? menu-item-active">
+		<a th:href="@{/reviews(categoryId=${category.id})}" th:remove="${selectedCategory}==${category}?tag">
+		<th:block th:text="${#strings.capitalize(category.name)}"></th:block></a>
+	</li>
+</ul>
+
+</html>

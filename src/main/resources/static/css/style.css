@@ -1,0 +1,60 @@
+body {
+  font-family: "Open Sans", "sans-serif";
+  background-color: #ddd;
+  background: url(/img/seamless_paper_texture.png);
+}
+
+.shadow-light {
+	  	text-shadow: 3px 2px 2px rgba(0,0,0,0.2);
+}
+.menu {
+	  background-color: #c0c0c0;	  
+}
+
+.menu-item{
+  color: #000;
+  text-decoration: none;
+  border-radius: 1rem;
+}
+
+.menu-item-active {
+  background-color: #4caf50;
+  color: white;
+}
+.menu-item:hover:not(.active) {
+  background-color: #555;
+  color: white;
+  border-radius: 1.5rem;
+}
+
+.img-shadow {
+  filter: drop-shadow(6px 6px 1px rgba(0, 0, 0, 0.8));
+}
+
+.review-footer {
+  background-color: #eee;
+}
+
+.review-footer, .page-footer {
+  background: url(/img/sandpaper.png);
+}
+
+.list-nostyle {
+    list-style: none;
+}
+
+.tag-list-li {
+    list-style: none;
+    border-right: 1px solid black;
+}
+
+.tag-list-li:last-child {
+    border-right: none;
+}
+
+.roundy {
+	  border-radius: .5rem;
+}
+
+
+

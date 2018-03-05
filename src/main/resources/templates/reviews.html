@@ -1,0 +1,54 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<link  rel="stylesheet" type="text/css" media="all" th:href="@{/css/layout.css}" />
+	<link  rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}" />
+	<title th:text="'A List of Reviews' + (${selectedTag != null}?' by Tag':'')">Title</title>
+</head>
+
+<body>
+
+	
+<main>
+  <header>
+	<h1	class="shadow-light" th:text="'A Listing of Fake Review Like Items' + (${selectedTag != null}?' by Tag':'') ">Heading</h1>	
+	<ul th:replace="fragments/lists::category-list"></ul>  
+  </header>
+  
+  <nav class="menu roundy">  
+	<ul class="menu list-nostyle shadow-light">
+  	  <li><a class="menu-item-active shadow-light" href="/reviews">Home</a></li>
+  	  <li th:each="review: ${reviews}"><a class="menu-item shadow-light" th:href="${'#' + review.title}" th:text="${review.title}">Review On Page</a></li>
+ 	</ul>
+ 	<a href="#top" class="button menu-item shadow-light"><strong>Back to Top</strong></a>
+  </nav>
+
+  <section>
+    <div id="top"></div>
+	<article class="review roundy" th:each="review: ${reviews}" th:id="${review.title}">
+
+		<figure class="review-figure" th:fragment="article-img">
+			<img class="img-shadow" th:src="${review.imageUrl}" alt="" />
+		</figure>
+		
+		<header class="review-header" th:fragment="article-header" th:inline="text">
+			<h2>
+			<a th:text="${review.title}" th:href="@{/review(id=${review.id})}" th:remove="!${#strings.isEmpty(id)}?tag">Review Title</a>	
+			</h2>
+			Published: [[${#temporals.format(review.bookPublishedDate, 'MMMM dd ,YYYY')}]]
+		</header>
+		
+		<section class="review-content" th:text="${review.description}">Amazing Description</section>
+		  <footer th:replace="fragments/footer::review-footer"></footer>
+	</article>
+  </section>
+  
+  <footer th:replace="fragments/footer::page-footer"></footer>
+
+ </main>
+
+	
+</body>
+</html>

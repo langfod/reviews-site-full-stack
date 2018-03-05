@@ -1,0 +1,119 @@
+*, *:before, *:after {
+	box-sizing: border-box;
+	margin: 0;
+}
+
+body {
+	overflow:hidden;
+}
+
+main>nav	 {grid-area: nav;}
+main>header	 {grid-area: header;}
+main>section {grid-area: articles;}
+main>footer {grid-area:footer;}
+main {
+	grid-template-areas: 
+	  "nav header"
+      "nav articles" 
+      "nav footer";
+	display: grid;
+	grid-gap: 5px;
+	grid-template-columns: minmax(4rem, 9rem) 1fr;
+	grid-template-rows: 4.70rem auto 3rem;
+	height: 100vh;
+	overflow:hidden;
+	
+}
+
+main>header {
+	text-align: center;
+	display: flex;
+	flex-direction: column;	
+}
+
+main>nav {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+main>nav>ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+main>nav>ul li a {
+	display: block;
+	padding: .5rem 1rem;
+	text-decoration: none;
+	border-radius: 1rem;
+}
+
+main>nav>.button {
+	margin-top: auto;
+}
+ 
+main>section {
+	overflow: auto;
+	padding: .5rem;
+	display: flexbox;
+	flexbox-direction: columns;
+}
+.review-header {grid-area: title;}
+.review-figure {grid-area: image;}
+.review-content {grid-area: content;}
+.review-footer {grid-area: foot;}
+.review {
+		grid-template-areas: 
+	  "image title" 
+	  "image content" 
+	  "foot foot";
+	display: grid;
+	grid-column-gap: 1rem;
+	grid-template-columns: minmax(min-content, 150px) auto;
+	grid-template-rows: auto 1fr auto;
+	margin: .5em 0 .5em 0;
+	border: 2px solid #444;
+	padding: .5rem;
+	overflow: auto;
+	max-height: calc(100vh - 9.5rem);
+}
+
+.review-header{
+	margin-bottom: 1em;
+}
+
+.review-figure img {
+	max-width: 100%;
+	display: block;
+}
+
+.review-footer {
+	margin-top: 1rem;
+}
+
+.tag-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items:center;
+    flex-wrap: wrap;
+    padding-left:0;
+}
+.tag-list-li {
+    margin-left: .5rem;
+    padding-right: .5rem;
+}
+
+.review-footer, .page-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.tab-item {
+	text-align: center;
+ 	padding: .5rem 1rem; 
+  }

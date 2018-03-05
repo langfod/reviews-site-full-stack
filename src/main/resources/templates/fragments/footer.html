@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<footer class="page-footer" th:fragment="page-footer" th:inline="text">
+	<ul class="tag-list list-nostyle">
+		<li class="shadow-light">Tags:</li>
+		<li class="tag-list-li shadow-light" th:each="reviewtag, iterStat: ${tagList}"
+			th:unless="${#lists.isEmpty(tagList)}"><a
+			th:href="@{/reviews(reviewtagId=${reviewtag.id})}"
+			th:remove="${reviewtag}==${selectedTag}?tag"> <th:block
+					th:text="${reviewtag}"></th:block></a>
+		</li>
+	</ul>
+</footer>
+
+<footer class="review-footer" th:fragment="review-footer" th:inline="text">
+	<ul class="tag-list tab-item list-nostyle">
+		<li class="shadow-light">Tags:</li>
+		<li class="tag-list-li shadow-light" th:each="reviewtag, iterStat: ${review.tags}"
+			th:unless="${#lists.isEmpty(review.tags)}"><a
+			th:href="@{/reviews(reviewtagId=${reviewtag.id})}"
+			th:remove="${reviewtag}==${selectedTag}?tag"> <th:block
+					th:text="${reviewtag}"></th:block></a>
+		</li>
+	</ul>
+</footer>
+	
+</html>
