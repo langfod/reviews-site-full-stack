@@ -79,7 +79,7 @@ public class ReviewsControllerTest {
 		when(tagRepository.findAll()).thenReturn(allTags);
 		when(categoryRepository.findAll()).thenReturn(allCategories);
 		when(review.getCategory()).thenReturn(category);
-		when(reviewRepository.findOne(42L)).thenReturn(review);
+		when(reviewRepository.findById(42L).get()).thenReturn(review);
 		when(category.getId()).thenReturn(1L);
 
 		mvc.perform(get("/review?id=42")).andExpect(view().name(is("review")));
@@ -93,7 +93,7 @@ public class ReviewsControllerTest {
 
 	@Test
 	public void shouldPutSingleReviewIntoModel() throws Exception {
-		when(reviewRepository.findOne(42L)).thenReturn(review);
+		when(reviewRepository.findById(42L).get()).thenReturn(review);
 
 		mvc.perform(get("/review?id=42")).andExpect(model().attribute("review", is(review)));
 	}

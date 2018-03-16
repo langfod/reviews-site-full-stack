@@ -26,7 +26,7 @@ public class ReviewsController {
 
 	@RequestMapping("/review")
 	public String review(@RequestParam(value = "id", required = true) Long inputid, Model model) {
-		Review review = reviewRepository.findOne(inputid);
+		Review review = reviewRepository.findById(inputid).get();
 		model.addAttribute("id", inputid);
 		model.addAttribute("tagList", tagRepository.findAll());
 		model.addAttribute("review", review);
@@ -43,11 +43,11 @@ public class ReviewsController {
 		model.addAttribute("categoryList", categoryRepository.findAll());
 
 		if (reviewtagId != null) {
-			Tag selectedTag = tagRepository.findOne(reviewtagId);
+			Tag selectedTag = tagRepository.findById(reviewtagId).get();
 			model.addAttribute("selectedTag", selectedTag);
 			model.addAttribute("reviews", reviewRepository.findByTags(selectedTag));
 		} else if (categoryId != null) {
-			Category selectedCategory = categoryRepository.findOne(categoryId);
+			Category selectedCategory = categoryRepository.findById(categoryId).get();
 			model.addAttribute("selectedCategory", selectedCategory);
 			model.addAttribute("reviews", reviewRepository.findByCategory(selectedCategory));
 		} else {
