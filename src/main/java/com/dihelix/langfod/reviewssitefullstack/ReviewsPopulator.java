@@ -1,6 +1,8 @@
 package com.dihelix.langfod.reviewssitefullstack;
 
+import java.io.Console;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,8 @@ public class ReviewsPopulator implements CommandLineRunner {
 	private TagRepository tagRepository;
 	@Resource
 	private CategoryRepository categoryRepository;
+	@Resource
+	private CommentRepository commentRepository;
 
 
 	@Override
@@ -108,7 +112,7 @@ public class ReviewsPopulator implements CommandLineRunner {
 				+ "American bobtail ocelot and siamese, tabby and munchkin. Puma. Turkish angora donskoy so thai for leopard. Himalayan tomcat ocelot for bombay. Singapura lynx egyptian mau puma or siamese. Lion siamese, persian and malkin. Persian cheetah, and maine coon for birman thai singapura. Manx. Malkin lynx for malkin savannah. ",
 				LocalDate.now(), "Kitten Ipsum for testing", "http://placekitten.com/200/250",
 				gimmeTagSet(tags, "cute", "furry", "scratches"))));
-		reviewList.add(reviewRepository.save(new Review("Bill Murray", categories.get("people"),
+		Review m = reviewRepository.save(new Review("Bill Murray", categories.get("people"),
 				"From Wikipedia, the free encyclopedia\r\n" + "\r\n" + "\r\n"
 						+ "William James Murray (born September 21, 1950) is an American actor, comedian, and writer. He first gained exposure on Saturday Night Live, a series of performances that earned him his first Emmy Award, and later starred in comedy films—including Meatballs (1979), Caddyshack (1980), Stripes (1981), Tootsie (1982), Ghostbusters (1984), Scrooged (1988), Ghostbusters II (1989), What About Bob? (1991), and Groundhog Day (1993). He also co-directed Quick Change (1990).\r\n"
 						+ "\r\n"
@@ -127,10 +131,19 @@ public class ReviewsPopulator implements CommandLineRunner {
 
 				LocalDate.now(),
 				"This is Bill Murray. Bill Murray is an actor and all around funny dude. He is known for movies like CaddyShack and Ghostbusters,",
-				"http://www.fillmurray.com/200/250", gimmeTagSet(tags, "actor", "groundhog-catcher"))));
+				"http://www.fillmurray.com/200/250", gimmeTagSet(tags, "actor", "groundhog-catcher")));
+			
+		reviewList.add(m);
+		Comment c = new Comment("tITLE", "amazing comment", LocalDateTime.now(),m);
 
+		c = commentRepository.save(c);
+				
+		
+		log.error("Comment: "+c.getCommentTitle());
+		log.error("Review: "+ reviewRepository.findById(m.getId()).get().getComments());
+		
+		
 	}
-
 	private Map<String, Tag> populateTagMap() {
 		Map<String, Tag> tags = new TreeMap<>();
 		tags.put("actor", tagRepository.save(new Tag("actor")));

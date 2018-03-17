@@ -5,12 +5,15 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.NaturalId;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Tag {
@@ -20,8 +23,9 @@ public class Tag {
 	private Long id;
 	@NaturalId
 	private String name;
-
-	@ManyToMany(mappedBy = "tags")
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "tags",cascade=CascadeType.ALL)
 	private Set<Review> reviews = new HashSet<>();
 
 	public Tag() {
@@ -73,6 +77,10 @@ public class Tag {
 	@Override
 	public int hashCode() {
 		return Objects.hash(name);
+	}
+
+	public void removeReview(Review review) {
+		reviews.remove(review);
 	}
 
 }

@@ -10,5 +10,4 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
 
 	Collection<Review> findByTags(Tag tag);
 	Collection<Review> findByCategory(Category category);
-
 }

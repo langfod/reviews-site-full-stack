@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Category {
 
@@ -17,10 +19,12 @@ public class Category {
 	@GeneratedValue Long id;
 	@NaturalId
 	private String name;
-
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "category")
 	private Set<Review> reviews;
 
+	@JsonIgnore
 	public Set<Review> getReviews() {
 		return reviews;
 	}
