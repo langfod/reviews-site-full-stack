@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class ReviewsController {
@@ -46,14 +44,12 @@ public class ReviewsController {
 	/* Resty Stuff */
 	/* ----------------------------------- */
 
-	
-
 	@ResponseBody
 	@GetMapping(value = "/api/review/{id}")
 	public Review apiReviewById(@PathVariable("id") Long inputid) {
 		return reviewRepository.findById(inputid).get();
 	}
-	
+
 	@ResponseBody
 	@GetMapping(value = "/api/review/{id}/comments")
 	public List<Comment> apiCommentsByReviewId(@PathVariable("id") Long inputid) {
@@ -63,7 +59,7 @@ public class ReviewsController {
 	@ResponseBody
 	@GetMapping(value = "/api/reviews/tag/{id}")
 	public Iterable<Review> apiReviewsByTag(@PathVariable("id") Long tagId) {
-		return reviewRepository.findByTags(tagRepository.findById(tagId).get());
+		return reviewRepository.findByTags_Id(tagId);
 	}
 
 	@ResponseBody
@@ -77,28 +73,23 @@ public class ReviewsController {
 	public Iterable<Tag> apiTags() {
 		return tagRepository.findAll();
 	}
-	
+
 	@ResponseBody
 	@PutMapping(value = "/api/review/{id}/tag", consumes = "application/json")
 	public ResponseEntity<String> apiReviewAddTags(@PathVariable("id") Long inputId,
 			@RequestBody List<String> tagNames) {
 		Review review = reviewRepository.findById(inputId).get();
-		tagNames.forEach(tagName -> reviewRepository.save(review.addTag(tagRepository.findByName(tagName).orElseGet(() -> tagRepository.save(new Tag(tagName))))));
+		tagNames.forEach(tagName -> reviewRepository.save(review
+				.addTag(tagRepository.findByName(tagName).orElseGet(() -> tagRepository.save(new Tag(tagName))))));
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-	
+
 	@ResponseBody
 	@DeleteMapping(value = "/api/review/{id}/tag/{tagId}")
 	public ResponseEntity<String> apiDeleteTagFromReview(@PathVariable("id") Long inputid,
 			@PathVariable("tagId") Long tagId) {
-		log.error("id: "+inputid);
-		Review review;
-		 review = reviewRepository.findById(inputid).get();
-			log.error("Review: "+review);
-
+		Review review = reviewRepository.findById(inputid).get();
 		review = reviewRepository.save(review.removeTag(tagRepository.findById(tagId).get()));
-		log.error("Review: "+review);
-
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
@@ -110,7 +101,7 @@ public class ReviewsController {
 		review = reviewRepository.save(review.removeComment(commentRepository.findById(commentId).get()));
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-	
+
 	/* ----------------------------------- */
 	/* Not Resty Stuff */
 	/* ----------------------------------- */
@@ -134,9 +125,8 @@ public class ReviewsController {
 		model.addAttribute("categoryList", categoryRepository.findAll());
 
 		if (reviewtagId != null) {
-			Tag selectedTag = tagRepository.findById(reviewtagId).get();
-			model.addAttribute("selectedTag", selectedTag);
-			model.addAttribute("reviews", reviewRepository.findByTags(selectedTag));
+			model.addAttribute("selectedTag", tagRepository.findById(reviewtagId).get());
+			model.addAttribute("reviews", reviewRepository.findByTags_Id(reviewtagId));
 		} else if (categoryId != null) {
 			Category selectedCategory = categoryRepository.findById(categoryId).get();
 			model.addAttribute("selectedCategory", selectedCategory);
