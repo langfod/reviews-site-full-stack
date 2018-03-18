@@ -34,6 +34,11 @@ public class Tag {
 	public Tag(String tagName) {
 		this.name = tagName;
 	}
+	
+	public Tag(String tagName, Review review) {
+		this.name = tagName;
+		this.reviews.add(review);
+	}
 
 	public Long getId() {
 		return id;
@@ -62,21 +67,6 @@ public class Tag {
 	@Override
 	public String toString() {
 		return name;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Tag tag = (Tag) o;
-		return Objects.equals(name, tag.name);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(name);
 	}
 
 	public void removeReview(Review review) {

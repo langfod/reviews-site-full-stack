@@ -41,6 +41,34 @@
 
 	<footer th:replace="fragments/footer::page-footer"></footer> </main>
 
+	<div id="tag-add-popup" class="modal">
+		<div>
+			<p>Drag an existing tag name into the box below:</p>
+			<ul class="tag-list list-nostyle">
+				<li draggable="true" ondragstart="dragTag(event)"
+					class="tag-list-li shadow-light"
+					th:each="reviewtag, iterStat: ${tagList}"
+					th:attr="data-tagid=${reviewtag.id},data-reviewid=${review.id}"
+					th:id="'AddTag-'+${review.id}+'-'+${reviewtag.id}"
+					>
+					<th:block th:text="${reviewtag}"></th:block>
+				</li>
+			</ul>
+			<label>Or type your new tag name here: <input id="tag-add-custom" type="text" ondragstart="return false;" ondrop="return false;"></label>
+			<button id="tag-add-custom-enter" type="button"><-</button>
+
+		</div>
+		<div>
+			<div>
+				<input id="tag-add-textbox" ondrop="dropTag(event)" ondragover="allowDrop(event)"
+					type="text" value="" readonly>
+			</div>
+			<button type="button" id="tag-add-apply" th:attr="data-reviewid=${review.id}"
+			>Apply</button>
+			<button type="button" id="tag-add-cancel">Cancel</button>
+		</div>
+	</div>
+
 	<div id="tag-delete-popup" class="modal">
 		<div>
 			<p>Click on the tag name in the article box to delete that tag.</p>

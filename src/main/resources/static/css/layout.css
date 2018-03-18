@@ -128,7 +128,7 @@ main>section {
 }
 
 
-#tag-delete-popup {
+#tag-delete-popup, #tag-add-popup {
 	 background-color: rgba(0, 0, 0, 0.7);
     opacity: 0;
     visibility: hidden;
@@ -138,12 +138,12 @@ main>section {
     width: 60%; 
 }
 
-#tag-delete-popup.show-modal {
+#tag-delete-popup.show-modal, #tag-add-popup.show-modal {
     opacity: 1;
     visibility: visible;
     margin: 1rem auto;
     z-index: 9999;
-    transition: visibility 0s linear 0s, opacity 1s 0s, transform 0.5s;
+    transition: visibility 1s linear 1s, opacity 1s 0s, transform 1s;
 	position: fixed;
   	left: 50%;
   	top: 15%;
@@ -151,19 +151,18 @@ main>section {
 	 background-color: rgba(0, 0, 0, 0.7);
 	padding: 3rem;
 }
-#tag-delete-popup div {
+#tag-delete-popup div, #tag-add-popup div{
     background-color: white;
     padding: .5rem 1rem;    
 }
 
-#tag-delete-popup p {
+#tag-delete-popup p, #tag-add-popup p {
     background-color: white;
     margin: 1rem auto 0 ; 
     text-align: center;   
 }
 
-#tag-edit-buttons {
-}
+#tag-add-textbox { width: 100%;}
 
 .not-visible {
 	    visibility: hidden;	

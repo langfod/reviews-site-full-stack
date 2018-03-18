@@ -68,10 +68,7 @@ public class Review {
 	public Review() {
 	}
 	
-	public Review removeTag(Tag tag) {
-		tags.remove(tag);
-		return this;		
-	}
+	
 	
 	public void setCategory(Category category) {
 		this.category = category;
@@ -144,10 +141,24 @@ public class Review {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+	public Review addTag(Tag tag) {
+        tags.add(tag);
+        tag.getReviews().add(this);
+        return this;
+    }
+ 
+    public Review removeTag(Tag tag) {
+        tags.remove(tag);
+        tag.getReviews().remove(this);
+        return this;
+    }
+   
 
-	 public void addComment(Comment comment) {
+	 public Review addComment(Comment comment) {
 	        comments.add(comment);
 	        comment.setReview(this);
+	        return this;
 	    }
 	 
 	    public Review removeComment(Comment comment) {
@@ -155,22 +166,5 @@ public class Review {
 	        comment.setReview(null);
 	        return this;
 	    }
-	/*
-	 * @Override public int hashCode() { return 31; }
-	 */
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Review review = (Review) o;
-		return Objects.equals(title, review.title);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(title);
-	}
-
+	
 }
