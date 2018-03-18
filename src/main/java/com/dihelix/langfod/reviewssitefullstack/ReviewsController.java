@@ -46,6 +46,47 @@ public class ReviewsController {
 	/* Resty Stuff */
 	/* ----------------------------------- */
 
+	
+
+	@ResponseBody
+	@GetMapping(value = "/api/review/{id}")
+	public Review apiReviewById(@PathVariable("id") Long inputid) {
+		return reviewRepository.findById(inputid).get();
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "/api/review/{id}/comments")
+	public List<Comment> apiCommentsByReviewId(@PathVariable("id") Long inputid) {
+		return commentRepository.findByReviewIdOrderByCommentDate(inputid);
+	}
+
+	@ResponseBody
+	@GetMapping(value = "/api/reviews/tag/{id}")
+	public Iterable<Review> apiReviewsByTag(@PathVariable("id") Long tagId) {
+		return reviewRepository.findByTags(tagRepository.findById(tagId).get());
+	}
+
+	@ResponseBody
+	@GetMapping(value = "/api/reviews")
+	public Iterable<Review> apiReviews() {
+		return reviewRepository.findAll();
+	}
+
+	@ResponseBody
+	@GetMapping(value = "/api/tags")
+	public Iterable<Tag> apiTags() {
+		return tagRepository.findAll();
+	}
+	
+	@ResponseBody
+	@PutMapping(value = "/api/review/{id}/tag", consumes = "application/json")
+	public ResponseEntity<String> apiReviewAddTags(@PathVariable("id") Long inputId,
+			@RequestBody List<String> tagNames) {
+		Review review = reviewRepository.findById(inputId).get();
+		tagNames.forEach(tagName -> reviewRepository.save(review.addTag(tagRepository.findByName(tagName).orElseGet(() -> tagRepository.save(new Tag(tagName))))));
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
 	@ResponseBody
 	@DeleteMapping(value = "/api/review/{id}/tag/{tagId}")
 	public ResponseEntity<String> apiDeleteTagFromReview(@PathVariable("id") Long inputid,
@@ -69,40 +110,7 @@ public class ReviewsController {
 		review = reviewRepository.save(review.removeComment(commentRepository.findById(commentId).get()));
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-
-	@ResponseBody
-	@GetMapping(value = "/api/review/{id}")
-	public Review apiReviewById(@PathVariable("id") Long inputid) {
-		return reviewRepository.findById(inputid).get();
-	}
-
-	@ResponseBody
-	@PutMapping(value = "/api/review/{id}/tag", consumes = "application/json")
-	public ResponseEntity<String> apiReviewAddTags(@PathVariable("id") Long inputId,
-			@RequestBody List<String> tagNames) {
-		Review review = reviewRepository.findById(inputId).get();
-		tagNames.forEach(tagName -> reviewRepository.save(review.addTag(tagRepository.findByName(tagName).orElseGet(() -> tagRepository.save(new Tag(tagName))))));
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
-
-	@ResponseBody
-	@GetMapping(value = "/api/reviews/tag/{id}")
-	public Iterable<Review> apiReviewsByTag(@PathVariable("id") Long tagId) {
-		return reviewRepository.findByTags(tagRepository.findById(tagId).get());
-	}
-
-	@ResponseBody
-	@GetMapping(value = "/api/reviews")
-	public Iterable<Review> apiReviews() {
-		return reviewRepository.findAll();
-	}
-
-	@ResponseBody
-	@GetMapping(value = "/api/tags")
-	public Iterable<Tag> apiTags() {
-		return tagRepository.findAll();
-	}
-
+	
 	/* ----------------------------------- */
 	/* Not Resty Stuff */
 	/* ----------------------------------- */

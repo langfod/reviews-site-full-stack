@@ -9,5 +9,6 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
 
 	List<Comment> findByReview(Review review);
 	List<Comment> findByReviewOrderByCommentDate(Review review);
+	List<Comment> findByReviewIdOrderByCommentDate(Long reviewId);
 
 }
