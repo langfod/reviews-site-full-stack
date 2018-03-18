@@ -29,14 +29,13 @@ const applyTagDeletion = () => {
 	tagElemArray.forEach(tagElem => {
 		const tagId = tagElem.getAttribute('data-tagid')
 		const reviewId = tagElem.getAttribute('data-reviewid')
-		responses.push(deleteTagFromReview(reviewId, tagId))
+		responses.push(deleteTagFromReview(reviewId, "review", tagId))
 	})
 	console.log(responses)
 	//TODO XXX Handle error responses. For just send to console 
 	Promise.all(responses.map(p => p.catch(err => err)))
 		.then(results => console.log(results))
 		.catch(err => console.log(err));
-
 }
 // TODO XXX document.querySelector("#tag_add").addEventListener('click', (event) => {});
 
@@ -50,17 +49,11 @@ const removeTagStage1 = (target) => {
 	// XXX 
 }
 
-function reflect(promise) {
-	return promise.then(function (v) { return { v: v, status: "resolved" } },
-		function (e) { return { e: e, status: "rejected" } });
-}
-
-const deleteTagFromReview = (reviewId, tagId) => {
-	const url = relUrl + "/api/review/" + reviewId + "/tag/" + tagId
+const deleteTagFromReview = (reviewId, subItemType, subItemId) => {
+	const url = relUrl + "/api/review/" + reviewId + "/" + subItemType + "/" + subItemId
 	return fetch(url, { method: 'DELETE' })
 	//XXX TODO Deal with reponse codes
 };
-
 
 
 

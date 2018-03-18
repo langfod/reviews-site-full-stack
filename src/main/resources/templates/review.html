@@ -1,46 +1,58 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-	<link  rel="stylesheet" type="text/css" media="all" th:href="@{/css/layout.css}" />
-	<link rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}" />
-	<title>A Single Review</title>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	th:href="@{/css/layout.css}" />
+<link rel="stylesheet" type="text/css" media="all"
+	th:href="@{/css/style.css}" />
+<title>A Single Review</title>
 </head>
 
 <body>
-<main>
-    <header>
+	<main> <header>
 		<h1 class="shadow-light">A Single Review Like Item</h1>
-		<ul th:replace="fragments/lists::category-list"></ul> 	
-    </header>
-    <nav class="menu roundy">  
-	  <ul class="menu list-nostyle shadow-light">
-  		<li><a class="menu-item-active shadow-light" href="/reviews">Home</a></li>
-  	    <li><a class="menu-item shadow-light" th:href="${'#' + review.title}" th:text="${review.title}">Review Link</a></li>
- 	  </ul>
- 	  <a style="margin-top: auto;" href="#top" class="button"><strong>Back to Top</strong></a>
-    </nav>
-	   
-    <section>
-     <div id="top"></div>
-    <article class="review roundy" th:id="${review.title}">
-	  <figure th:replace="reviews::article-img"></figure>
-	  <header th:replace="reviews::article-header"></header>
-	  <section th:utext="${#strings.replace(#strings.escapeXml(review.content),'&#10;','&lt;br&gt;')}">Amazing Content</section>
-      <footer th:replace="fragments/footer::review-footer"></footer>
-    </article>
-	
-    </section>
+		<ul th:replace="fragments/lists::category-list"></ul>
+	</header>
+	<nav class="menu roundy">
+		<ul class="menu list-nostyle shadow-light">
+			<li><a class="menu-item-active shadow-light" href="/reviews">Home</a></li>
+			<li><a class="menu-item shadow-light"
+				th:href="${'#' + review.title}" th:text="${review.title}">Review
+					Link</a></li>
+		</ul>
+		<a style="margin-top: auto;" href="#top" class="button"><strong>Back
+				to Top</strong></a>
+	</nav>
 
-  <footer th:replace="fragments/footer::page-footer"></footer>
-</main>	
+	<section>
+		<div id="top"></div>
+		<article class="review roundy" th:id="${review.title}">
+			<figure th:replace="reviews::article-img"></figure>
+			<header th:replace="reviews::article-header"></header>
+			<section
+				th:utext="${#strings.replace(#strings.escapeXml(review.content),'&#10;','&lt;br&gt;')}">Amazing
+				Content</section>
+			<footer th:replace="fragments/footer::review-footer"></footer>
+		</article>
 
-<div id="tag-delete-popup" class="modal">
-<p> Click on the tag name in the article box to delete that tag.
-<br>
-<button type="button" id="tag-delete-apply">Apply</button><button type="button" id="tag-delete-cancel">Cancel</button>
-</p></div>	
+	</section>
+
+	<footer th:replace="fragments/footer::page-footer"></footer> </main>
+
+	<div id="tag-delete-popup" class="modal">
+		<div>
+			<p>Click on the tag name in the article box to delete that tag.</p>
+
+		</div>
+		<div>
+			<p>
+				<button type="button" id="tag-delete-apply">Apply</button>
+				<button type="button" id="tag-delete-cancel">Cancel</button>
+			</p>
+		</div>
+	</div>
 </body>
 <script src="js/reviews.js "></script>
 </html>
