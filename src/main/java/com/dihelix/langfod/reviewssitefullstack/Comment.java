@@ -22,18 +22,26 @@ public class Comment {
 	@Lob
 	private String commentContent;
 	private LocalDateTime commentDate;
-	
+	private String userName;
 	@JsonIgnore
 	@ManyToOne
 	private Review review;
 
 	public Comment() {}
 	
-	public Comment(String commentTitle, String commentContent, LocalDateTime commentDate, Review review) {
+	public Comment(String commentTitle, String commentContent, String userName, LocalDateTime commentDate, Review review) {
 		this.commentTitle = commentTitle;
 		this.commentContent = commentContent;
 		this.commentDate = commentDate;
 		this.review = review;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public Long getId() {

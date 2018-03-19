@@ -141,7 +141,7 @@ public class Review {
 	
 	public Review addTag(Tag tag) {
         tags.add(tag);
-        tag.getReviews().add(this);
+       // tag.getReviews().add(this);
         return this;
     }
  

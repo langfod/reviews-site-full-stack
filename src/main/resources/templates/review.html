@@ -3,6 +3,8 @@
 
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"
+	rel="stylesheet">
 <link rel="stylesheet" type="text/css" media="all"
 	th:href="@{/css/layout.css}" />
 <link rel="stylesheet" type="text/css" media="all"
@@ -28,13 +30,32 @@
 
 	<section>
 		<div id="top"></div>
-		<article class="review roundy" th:id="${review.title}">
+		<article class="review roundy" th:id="${review.title}"
+			th:attr="data-reviewid=${review.id}">
 			<figure th:replace="reviews::article-img"></figure>
 			<header th:replace="reviews::article-header"></header>
 			<section
 				th:utext="${#strings.replace(#strings.escapeXml(review.content),'&#10;','&lt;br&gt;')}">Amazing
 				Content</section>
 			<footer th:replace="fragments/footer::review-footer"></footer>
+
+			<section id="review-comments">
+				<header class="comment-section-header">
+					<div class="goleft">
+						<span id="comment-switch" class="fas fa-caret-up"></span> <span
+							th:inline="text">[[${#lists.size(comments)}]] Comments</span>
+					</div>
+					<div class="goright">
+						<button id="add-comment">Add Comment</button>
+					</div>
+				</header>
+				<th:block th:each="comment: ${comments}">
+					<article th:replace="fragments/comments::comment"></article>
+				</th:block>
+
+
+			</section>
+
 		</article>
 
 	</section>
@@ -48,23 +69,21 @@
 				<li draggable="true" ondragstart="dragTag(event)"
 					class="tag-list-li shadow-light"
 					th:each="reviewtag, iterStat: ${tagList}"
-					th:attr="data-tagid=${reviewtag.id},data-reviewid=${review.id}"
-					th:id="'AddTag-'+${review.id}+'-'+${reviewtag.id}"
-					>
-					<th:block th:text="${reviewtag}"></th:block>
-				</li>
+					th:id="'AddTag-'+${review.id}+'-'+${reviewtag.id}"><th:block
+						th:text="${reviewtag}"></th:block></li>
 			</ul>
-			<label>Or type your new tag name here: <input id="tag-add-custom" type="text" ondragstart="return false;" ondrop="return false;"></label>
+			<label>Or type your new tag name here: <input
+				id="tag-add-custom" type="text" ondragstart="return false;"
+				ondrop="return false;"></label>
 			<button id="tag-add-custom-enter" type="button"><-</button>
 
 		</div>
 		<div>
 			<div>
-				<input id="tag-add-textbox" ondrop="dropTag(event)" ondragover="allowDrop(event)"
-					type="text" value="" readonly>
+				<input id="tag-add-textbox" ondrop="dropTag(event)"
+					ondragover="allowDrop(event)" type="text" value="" readonly>
 			</div>
-			<button type="button" id="tag-add-apply" th:attr="data-reviewid=${review.id}"
-			>Apply</button>
+			<button type="button" id="tag-add-apply">Apply</button>
 			<button type="button" id="tag-add-cancel">Cancel</button>
 		</div>
 	</div>
@@ -76,11 +95,39 @@
 		</div>
 		<div>
 			<p>
-				<button type="button" id="tag-delete-apply">Apply</button>
+				<button type="button" id="tag-delete-apply"
+					th:attr="data-reviewid=${review.id}">Apply</button>
 				<button type="button" id="tag-delete-cancel">Cancel</button>
 			</p>
 		</div>
 	</div>
+	<form id="new-comment-form" class="modal" action="#"
+		th:action="@{'/review/'+${review.Id}+'/comment'}"
+		th:object="${newComment}" method="post">
+
+		<fieldset>
+			<legend>Enter Your Comment</legend>
+			<p>
+				<label>User Name</label> <input type="text"
+					id="comment-form-userName-input" th:field="*{userName}" />
+			</p>
+			<p>
+				<label>Title</label> <input type="text" th:field="*{commentTitle}" />
+			</p>
+			<p>
+				<label>Comment </label>
+				<textarea id="comment-form-userComment-input"
+					th:field="*{commentContent}" rows="4" cols="40"></textarea>
+			</p>
+
+			<p>
+				<input type="submit" value="Submit" disabled /> <input type="reset"
+					value="Reset" /> <input type="button" id="new-comment-form-cancel"
+					value="Cancel" />
+			</p>
+
+		</fieldset>
+	</form>
 </body>
 <script src="js/reviews.js "></script>
 </html>

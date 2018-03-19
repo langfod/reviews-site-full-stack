@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+	<article th:fragment="comment" th:id="|R-${review.id}-C${comment.id}|"  class="review-comment hidden" xmlns:th="http://www.thymeleaf.org">
+			<footer>
+						<p class="goleft">
+							User: <span th:text="${comment.userName}">username</span>
+						</p>
+						<p class="goright">
+							<time th:datetime=${comment.commentDate} th:text="${#temporals.format(comment.commentDate, 'MMM dd, yyyy HH:mm', locale)}">Friday</time>
+						</p>
+					</footer>
+					<p th:text="${comment.commentContent}">much content</p>
+			</article>		
+	
+</html>
+

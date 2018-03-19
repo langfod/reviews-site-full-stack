@@ -134,7 +134,7 @@ public class ReviewsPopulator implements CommandLineRunner {
 				"http://www.fillmurray.com/200/250", gimmeTagSet(tags, "actor", "groundhog-catcher")));
 			
 		reviewList.add(m);
-		Comment c = new Comment("tITLE", "amazing comment", LocalDateTime.now(),m);
+		Comment c = new Comment("tITLE", "amazing comment", "John Doe", LocalDateTime.now(),m);
 
 		c = commentRepository.save(c);
 				

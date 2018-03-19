@@ -56,7 +56,7 @@ public class ReviewsController {
 	@ResponseBody
 	@GetMapping(value = "/api/review/{id}/comments")
 	public List<Comment> apiCommentsByReviewId(@PathVariable("id") Long inputid) {
-		return commentRepository.findByReviewIdOrderByCommentDate(inputid);
+		return commentRepository.findByReviewIdOrderByCommentDateDesc(inputid);
 	}
 
 	@ResponseBody
@@ -79,7 +79,7 @@ public class ReviewsController {
 	
 	@ResponseBody
 	@PostMapping("/api/review/{id}/comment")
-    public Comment greetingSubmit(@PathVariable("id") Long reviewId, @ModelAttribute Comment comment) {
+    public Comment restCommentSubmit(@PathVariable("id") Long reviewId, @ModelAttribute Comment comment) {
 		comment.setCommentDate(LocalDateTime.now());
 		comment.setReview(reviewRepository.findById(reviewId).get());
 		comment = commentRepository.save(comment);
@@ -91,8 +91,13 @@ public class ReviewsController {
 	public ResponseEntity<String> apiReviewAddTags(@PathVariable("id") Long inputId,
 			@RequestBody List<String> tagNames) {
 		Review review = reviewRepository.findById(inputId).get();
-		tagNames.forEach(tagName -> reviewRepository.save(review
-				.addTag(tagRepository.findByName(tagName).orElseGet(() -> tagRepository.save(new Tag(tagName))))));
+		tagNames.forEach(tagName -> {
+			reviewRepository.save(
+				review.addTag(
+						tagRepository.findByName(tagName).orElseGet(() -> tagRepository.save(new Tag(tagName)))
+				)
+			);
+		});
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
@@ -119,13 +124,16 @@ public class ReviewsController {
 	/* ----------------------------------- */
 
 	@RequestMapping("/review")
-	public String reviewByIdGet(@RequestParam(value = "id", required = true) Long inputid, Model model) {
-		Review review = reviewRepository.findById(inputid).get();
-		model.addAttribute("id", inputid);
+	public String reviewByIdGet(@RequestParam(value = "id", required = true) Long reviewId, Model model) {
+		Review review = reviewRepository.findById(reviewId).get();
+		model.addAttribute("comments", commentRepository.findByReviewIdOrderByCommentDateDesc(reviewId));
+		//model.addAttribute("id", reviewId);
 		model.addAttribute("tagList", tagRepository.findAll());
 		model.addAttribute("review", review);
 		model.addAttribute("categoryList", categoryRepository.findAll());
 		model.addAttribute("selectedCategory", review.getCategory());
+		model.addAttribute("newComment", new Comment());
+
 		return "review";
 	}
 
@@ -155,4 +163,29 @@ public class ReviewsController {
 		model.addAttribute("categoryList", categoryRepository.findAll());
 		return "categories";
 	}
+	
+	@GetMapping(value = { "/review/{id}/footer" })
+	public String reviewFooter(@PathVariable("id")  Long reviewId, Model model) {
+		Review review = reviewRepository.findById(reviewId).get();
+		model.addAttribute("review", review);
+		return "fragments/footer::review-footer";
+
+	}
+	
+	@GetMapping(value = { "/reviews/footer" })
+	public String reviewFooter(Model model) {
+		model.addAttribute("tagList", tagRepository.findAll());
+		return "fragments/footer::page-footer";
+
+	}
+	
+	@PostMapping("/review/{id}/comment")
+    public String commentSubmit(@PathVariable("id") Long reviewId, @ModelAttribute Comment comment) {
+		comment.setCommentDate(LocalDateTime.now());
+		comment.setReview(reviewRepository.findById(reviewId).get());
+		comment = commentRepository.save(comment);
+		return "redirect:/review?id="+reviewId;
+
+    }
+	
 }

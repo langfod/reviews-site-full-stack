@@ -16,6 +16,7 @@ main {
 	  "nav header"
       "nav articles" 
       "nav footer";
+      
 	display: grid;
 	grid-gap: 5px;
 	grid-template-columns: minmax(auto, 8rem) 1fr;
@@ -65,15 +66,17 @@ main>section {
 .review-figure {grid-area: image;}
 .review-content {grid-area: content;}
 .review-footer {grid-area: foot;}
+#review-comments { grid-area: comments}
 .review {
 		grid-template-areas: 
 	  "image title" 
 	  "image content" 
-	  "foot foot";
+	  "foot foot"
+	  "comments comments";
 	display: grid;
 	grid-column-gap: 1rem;
 	grid-template-columns: minmax(min-content, 140px) auto;
-	grid-template-rows: auto 1fr auto;
+	grid-template-rows: auto 1fr auto auto;
 	margin: .5em 0 .5em 0;
 	border: 2px solid #444;
 	padding: .5rem;
@@ -128,7 +131,7 @@ main>section {
 }
 
 
-#tag-delete-popup, #tag-add-popup {
+#tag-delete-popup, #tag-add-popup, #new-comment-form {
 	 background-color: rgba(0, 0, 0, 0.7);
     opacity: 0;
     visibility: hidden;
@@ -138,12 +141,13 @@ main>section {
     width: 60%; 
 }
 
-#tag-delete-popup.show-modal, #tag-add-popup.show-modal {
+ 
+#tag-delete-popup.show-modal, #tag-add-popup.show-modal, #new-comment-form.show-modal{
     opacity: 1;
     visibility: visible;
     margin: 1rem auto;
     z-index: 9999;
-    transition: visibility 1s linear 1s, opacity 1s 0s, transform 1s;
+    transition: visibility 0s ease-in-out, opacity 1s, transform 1s;
 	position: fixed;
   	left: 50%;
   	top: 15%;
@@ -151,17 +155,22 @@ main>section {
 	 background-color: rgba(0, 0, 0, 0.7);
 	padding: 3rem;
 }
-#tag-delete-popup div, #tag-add-popup div{
+#tag-delete-popup div, #tag-add-popup div , #new-comment-form p{
     background-color: white;
     padding: .5rem 1rem;    
 }
 
-#tag-delete-popup p, #tag-add-popup p {
+
+#tag-delete-popup p, #tag-add-popup p , #new-comment-form fieldset,#new-comment-form legend {
     background-color: white;
     margin: 1rem auto 0 ; 
     text-align: center;   
 }
 
+#new-comment-form.show-modal{top: 45%}
+#new-comment-form fieldset{margin: 0 auto; padding-top: 1rem}
+//#new-comment-form {margin: 1rem; width: 70%}
+//#new-comment-form p {margin: 1rem 0}
 #tag-add-textbox { width: 100%;}
 
 .not-visible {
@@ -172,7 +181,46 @@ main>section {
 	    visibility: visible;	
 }
 
+.hidden {
+    display: none !important;
+}
+#review-comments {
+	display: flex;
+	flex-direction: column;
+}
+
+#review-comments>header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#review-comments article>footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.review-comment {
+   margin: 1rem;
+   outline: 1px solid;
+}
+.review-comment p{
+   margin: .5rem;
+}
 
 
+.goleft {
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: .5rem;
+    margin-right: auto;
+    justify-items: flex-start;
+}
 
-
+.goright {
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: .5rem;
+    margin-left: auto;
+}

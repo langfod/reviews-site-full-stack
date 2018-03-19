@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<footer class="page-footer" th:fragment="page-footer" th:inline="text">
+<footer class="page-footer" th:fragment="page-footer" th:inline="text" xmlns:th="http://www.thymeleaf.org">
 	<ul class="tag-list list-nostyle">
 		<li class="shadow-light">Tags:</li>
 		<li class="tag-list-li shadow-light" th:each="reviewtag, iterStat: ${tagList}"
@@ -12,7 +12,7 @@
 	</ul>
 </footer>
 
-<footer class="review-footer" th:fragment="review-footer" th:inline="text">
+<footer class="review-footer" th:fragment="review-footer" th:inline="text" xmlns:th="http://www.thymeleaf.org">
 	<ul class="tag-list tab-item list-nostyle">
 		<li class="shadow-light">Tags:</li>
 		<li class="tag-list-li shadow-light" th:each="reviewtag, iterStat: ${review.tags}"
@@ -23,7 +23,7 @@
 					th:text="${reviewtag}"></th:block></a>
 		</li>
 	</ul>
-	<div id=tag-edit-buttons class="not-visible"><button id=tag_add>[+]</button><button id=tag_delete>[-]</button></div>
+	<div id=tag-edit-buttons class="not-visible" ><button id=tag_add>[+]</button><button id=tag_delete >[-]</button></div>
 </footer>
 	
 </html>
