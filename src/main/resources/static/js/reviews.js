@@ -49,14 +49,14 @@ const applyTagDeletion = () => {
 		.catch(err => console.log(err));
 }
 const replaceElemWithFragment = (url, element) => {
-	fetch(url).then(response => response.text()).then(respText => {
+	return fetch(url).then(response => response.text()).then(respText => {
 		const htmlTemplate = document.createElement('template');
 		htmlTemplate.innerHTML = respText
 		element.replaceWith(htmlTemplate.content.firstChild)
 	})
 }
-const refreshFooters = async (reviewId) => {
-	return await Promise.all([replaceElemWithFragment(relUrl + "/review/" + reviewId + "/footer", document.querySelector("article>footer")),
+const refreshFooters = (reviewId) => {
+	return Promise.all([replaceElemWithFragment(relUrl + "/review/" + reviewId + "/footer", document.querySelector("article>footer")),
 	replaceElemWithFragment(relUrl + "/reviews/footer", document.querySelector("main>footer"))]).catch((err) => console.log(err))
 }
 const enableElement = (elem) => document.querySelector(elem).disabled = false
@@ -92,18 +92,12 @@ const startTagAddListeners = () => {
 			const newTagArray = document.querySelector("#tag-add-textbox").value.split(",").map(e => e.trim())
 			const url = relUrl + "/api/review/" + reviewId + "/" + "tag"
 			putFetch(url, newTagArray).then(() => {
-				//XXX TODO Deal with reponse codes
-				refreshFooters(reviewId).then((wtf) => {
-					console.log(wtf)
+				//XXX TODO Deal with response codes
+				refreshFooters(reviewId).then(() => {
 					initialStatey()
-					showTagEditButtons()
 					hideModal("#tag-add-popup")
-					location.reload()
 				})
 			})
-			//showTagEditButtons()
-			//hideModal("#tag-add-popup")
-			//location.reload()  //XXX Wrong Wrong Wrong but gets around subtle async bug.
 		})
 
 		document.querySelector("input#tag-add-custom").addEventListener('keyup', (event) => {
