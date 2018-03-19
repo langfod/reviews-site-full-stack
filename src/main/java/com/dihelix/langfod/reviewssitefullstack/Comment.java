@@ -32,10 +32,17 @@ public class Comment {
 	public Comment(String commentTitle, String commentContent, String userName, LocalDateTime commentDate, Review review) {
 		this.commentTitle = commentTitle;
 		this.commentContent = commentContent;
+		this.userName = userName;
 		this.commentDate = commentDate;
 		this.review = review;
 	}
-
+	public Comment(String commentTitle, String commentContent, String userName, LocalDateTime commentDate) {
+		this.commentTitle = commentTitle;
+		this.commentContent = commentContent;
+		this.userName = userName;
+		this.commentDate = commentDate;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}
