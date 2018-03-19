@@ -3,7 +3,7 @@
  */
 
 // Globals
-var tagElemArray = new Array();
+const tagElemArray = new Array();
 const relUrl = window.location.protocol + "//" + window.location.host;
 const reviewId = document.querySelector("article").getAttribute('data-reviewid')
 
@@ -13,8 +13,9 @@ const reviewId = document.querySelector("article").getAttribute('data-reviewid')
 const showTagEditButtons = () => document.querySelector("#tag-edit-buttons").classList.remove("not-visible")
 const hideTagEditButtons = () => document.querySelector("#tag-edit-buttons").classList.add("not-visible")
 
-const showModal =  (element) => document.querySelector(element).classList.add("show-modal")
-const hideModal =  (element) => document.querySelector(element).classList.remove("show-modal")
+const showModal = (element) => document.querySelector(element).classList.add("show-modal")
+const hideModal = (element) => document.querySelector(element).classList.remove("show-modal")
+const toggleHidden = (elem) => elem.classList.toggle("hidden")
 
 const getFetch = (url) => fetch(url).then(res => res.text())
 const deleteFetch = (url) => fetch(url, { method: 'DELETE' })
@@ -47,20 +48,31 @@ const applyTagDeletion = () => {
 		.then(results => console.log(results.status))
 		.catch(err => console.log(err));
 }
-const replaceElemWithFragment =  (url, element) => {
-	 fetch(url).then(response => response.text()).then(respText => {
+const replaceElemWithFragment = (url, element) => {
+	fetch(url).then(response => response.text()).then(respText => {
 		const htmlTemplate = document.createElement('template');
 		htmlTemplate.innerHTML = respText
 		element.replaceWith(htmlTemplate.content.firstChild)
 	})
 }
-const refreshFooters =  (reviewId) =>  {
+const refreshFooters = (reviewId) => {
 	return Promise.all([replaceElemWithFragment(relUrl + "/review/" + reviewId + "/footer", document.querySelector("article>footer")),
 	replaceElemWithFragment(relUrl + "/reviews/footer", document.querySelector("main>footer"))]).catch((err) => console.log(err))
 }
-const enableElement = (elem )=> document.querySelector(elem).disabled = false
-const disableElement = (elem) =>  document.querySelector(elem).disabled = true
+const enableElement = (elem) => document.querySelector(elem).disabled = false
+const disableElement = (elem) => document.querySelector(elem).disabled = true
 const removeNonAlpha = (inputStr) => inputStr.replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]/, '').replace(/\s+/g, '')
+
+const flipCaret = (elem) => {
+	const caretDown = "fa-caret-down";
+	const caretUp = "fa-caret-up";
+	if (elem.className.includes(caretDown)) {
+		elem.classList.replace(caretDown, caretUp)
+	} else {
+		elem.classList.replace(caretUp, caretDown)
+	}
+}
+
 
 const startTagAddListeners = () => {
 	document.querySelector("button#tag_add").addEventListener('click', (event) => {
@@ -80,7 +92,7 @@ const startTagAddListeners = () => {
 			const url = relUrl + "/api/review/" + reviewId + "/" + "tag"
 			putFetch(url, newTagArray).then(() => {
 				//XXX TODO Deal with reponse codes
-				refreshFooters(reviewId).then(() => initialStatey() )
+				refreshFooters(reviewId).then(() => initialStatey())
 			})
 			showTagEditButtons()
 			hideModal("#tag-add-popup")
@@ -88,7 +100,6 @@ const startTagAddListeners = () => {
 		})
 
 		document.querySelector("input#tag-add-custom").addEventListener('keyup', (event) => {
-			//document.querySelector("button#tag-add-custom-enter").disabled = !(event.target.value.trim())
 			(event.target.value.trim()) ? enableElement("button#tag-add-custom-enter") : disableElement("button#tag-add-custom-enter")
 		})
 		document.querySelector("button#tag-add-cancel").addEventListener('click', () => location.reload())
@@ -114,30 +125,15 @@ const startTagDeleteListeners = () => {
 	})
 }
 //
-const flipCaret = (elem) => {
-    const caretDown = "fa-caret-down";
-    const caretUp = "fa-caret-up";
-    if (elem.className.includes(caretDown)) {
-        elem.classList.replace(caretDown, caretUp)
-    } else {
-        elem.classList.replace(caretUp, caretDown)
-    }
+
+const startCommentAreaListeners = () => {
+	document.querySelector("#comment-switch").addEventListener('click', (event) => {
+		document.querySelectorAll("#review-comments>article").forEach(article => toggleHidden(article))
+		flipCaret(event.target)
+	})
+	document.querySelector("button#add-comment").addEventListener('click', (event) => showModal("#new-comment-form"))
+	document.querySelector("input#new-comment-form-cancel").addEventListener('click', (event) => hideModal("#new-comment-form"))
 }
-const toggleHidden = (elem) => elem.classList.toggle("hidden")
-
-document.querySelector("#comment-switch").addEventListener('click', (event) => {
-	document.querySelectorAll("#review-comments>article").forEach(article => toggleHidden(article))
-	flipCaret(event.target)
-});
-
-document.querySelector("button#add-comment").addEventListener('click', (event) => {
-	showModal("#new-comment-form")
-})
-
-document.querySelector("input#new-comment-form-cancel").addEventListener('click', (event) => {
-	hideModal("#new-comment-form")
-})
-
 
 //
 /*
@@ -152,6 +148,7 @@ const initialStatey = () => {
 	showTagEditButtons()
 	startTagAddListeners()
 	startTagDeleteListeners()
+	startCommentAreaListeners()
 }
 //
 //
