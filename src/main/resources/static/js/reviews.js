@@ -50,7 +50,7 @@ const applyTagDeletion = () => {
 }
 const replaceElemWithFragment = (url, element) => {
 	return fetch(url).then(response => response.text()).then(respText => {
-		const htmlTemplate = document.createElement('template');
+		const htmlTemplate = document.createElement('template')
 		htmlTemplate.innerHTML = respText
 		element.replaceWith(htmlTemplate.content.firstChild)
 	})
@@ -64,8 +64,8 @@ const disableElement = (elem) => document.querySelector(elem).disabled = true
 const removeNonAlpha = (inputStr) => inputStr.replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]/, '').replace(/\s+/g, '')
 
 const flipCaret = (elem) => {
-	const caretDown = "fa-caret-down";
-	const caretUp = "fa-caret-up";
+	const caretDown = "fa-caret-down"
+	const caretUp = "fa-caret-up"
 	if (elem.className.includes(caretDown)) {
 		elem.classList.replace(caretDown, caretUp)
 	} else {
@@ -149,10 +149,11 @@ const initialStatey = () => {
 	showTagEditButtons()
 	startTagAddListeners()
 	startTagDeleteListeners()
-	startCommentAreaListeners()
 }
 //
 //
 
 initialStatey()
+startCommentAreaListeners()
+
 
