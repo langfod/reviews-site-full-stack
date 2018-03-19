@@ -77,7 +77,7 @@ const flipCaret = (elem) => {
 const startTagAddListeners = () => {
 	document.querySelector("button#tag_add").addEventListener('click', (event) => {
 		showModal("#tag-add-popup")
-		//hideTagEditButtons()  // disable until figure out a fix
+		hideTagEditButtons()  // disable until figure out a fix
 		document.querySelector("button#tag-add-custom-enter").addEventListener('click', (event) => {
 			const userInputText = document.querySelector("#tag-add-custom").value
 			const newTagField = document.querySelector("#tag-add-textbox")
