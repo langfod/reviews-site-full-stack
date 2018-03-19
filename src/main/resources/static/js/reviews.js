@@ -25,9 +25,9 @@ const putFetch = (url, data) => {
 		headers: new Headers({ 'Content-Type': 'application/json' })
 	})
 }
-const allowDrop = event => event.preventDefault()
-const dragTag = event => event.dataTransfer.setData("text", event.target.innerText)
-const dropTag = event => {
+const allowDrop = (event) => event.preventDefault()
+const dragTag = (event) => event.dataTransfer.setData("text", event.target.innerText)
+const dropTag = (event) => {
 	event.preventDefault()
 	appendTextToElementValue(event.target, event.dataTransfer.getData("text"))
 	document.querySelector("#tag-add-apply").disabled = !(event.target.value.trim())
@@ -55,8 +55,8 @@ const replaceElemWithFragment = (url, element) => {
 		element.replaceWith(htmlTemplate.content.firstChild)
 	})
 }
-const refreshFooters = (reviewId) => {
-	return Promise.all([replaceElemWithFragment(relUrl + "/review/" + reviewId + "/footer", document.querySelector("article>footer")),
+const refreshFooters = async (reviewId) => {
+	return await Promise.all([replaceElemWithFragment(relUrl + "/review/" + reviewId + "/footer", document.querySelector("article>footer")),
 	replaceElemWithFragment(relUrl + "/reviews/footer", document.querySelector("main>footer"))]).catch((err) => console.log(err))
 }
 const enableElement = (elem) => document.querySelector(elem).disabled = false
@@ -77,7 +77,7 @@ const flipCaret = (elem) => {
 const startTagAddListeners = () => {
 	document.querySelector("button#tag_add").addEventListener('click', (event) => {
 		showModal("#tag-add-popup")
-		hideTagEditButtons()
+		//hideTagEditButtons()  // disable until figure out a fix
 		document.querySelector("button#tag-add-custom-enter").addEventListener('click', (event) => {
 			const userInputText = document.querySelector("#tag-add-custom").value
 			const newTagField = document.querySelector("#tag-add-textbox")
@@ -88,15 +88,22 @@ const startTagAddListeners = () => {
 		})
 
 		document.querySelector("button#tag-add-apply").addEventListener('click', (event) => {
+			event.preventDefault()
 			const newTagArray = document.querySelector("#tag-add-textbox").value.split(",").map(e => e.trim())
 			const url = relUrl + "/api/review/" + reviewId + "/" + "tag"
 			putFetch(url, newTagArray).then(() => {
 				//XXX TODO Deal with reponse codes
-				refreshFooters(reviewId).then(() => initialStatey())
+				refreshFooters(reviewId).then((wtf) => {
+					console.log(wtf)
+					initialStatey()
+					showTagEditButtons()
+					hideModal("#tag-add-popup")
+					location.reload()
+				})
 			})
-			showTagEditButtons()
-			hideModal("#tag-add-popup")
-			location.reload()  //XXX Wrong Wrong Wrong but gets around subtle async bug.
+			//showTagEditButtons()
+			//hideModal("#tag-add-popup")
+			//location.reload()  //XXX Wrong Wrong Wrong but gets around subtle async bug.
 		})
 
 		document.querySelector("input#tag-add-custom").addEventListener('keyup', (event) => {
